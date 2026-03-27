@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Store Detail Page
+  Mini Project Hub - Detail Page
 @endsection
 
 @section('content')
@@ -18,7 +18,7 @@
               <nav>
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item">
-                    <a href="/index.html">Home</a>
+                    <a href="/">Home</a>
                   </li>
                   <li class="breadcrumb-item active">
                     Product Details
@@ -71,11 +71,48 @@
         <section class="store-heading">
           <div class="container">
             <div class="row">
-              <div class="col-lg-8">
-                <h1>{{ $product->name }}</h1>
-                <div class="owner">By {{ $product->user->store_name }}</div>
-                <div class="price">${{ number_format($product->price) }}</div>
-              </div>
+              <div class="col-lg-8 product-details">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1 class="product-name mb-1">{{ $product->name }}</h1>
+                    <div class="rating">
+                        @for ($i = 1; $i <= 5; $i++)
+                            @if ($i <= $product->rating)
+                                <span class="star filled">&#9733;</span>
+                            @else
+                                <span class="star">&#9734;</span>
+                            @endif
+                        @endfor
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="price mt-2">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
+                  <div class="products-categories">{{ ($product->category->name) }}</div>
+                </div>
+            </div>
+            
+            <style>
+              .rating {
+                  display: flex;
+                  gap: 4px;             /* jarak antar bintang */
+              }
+
+              .rating .star {
+                  font-size: 22px;       /* ukuran nyaman dibaca */
+                  color: #ccc;           /* warna bintang kosong */
+                  transition: color 0.3s;
+              }
+
+              .rating .star.filled {
+                  color: #f5a623;       /* warna gold hangat */
+              }
+
+              /* optional: hover untuk efek ringan */
+              .rating .star:hover,
+              .rating .star:hover ~ .star {
+                  color: #ffcb70;
+              }
+            </style>
+
               <div class="col-lg-2" data-aos="zoom-in">
                 @auth
                     <form action="{{ route('detail-add', $product->id) }}" method="POST" enctype="multipart/form-data">
@@ -182,7 +219,7 @@
             @foreach ($product->galleries as $gallery)
             {
               id: {{ $gallery->id }},
-              url: "{{ Storage::url($gallery->photos) }}",
+              url: "{{ asset('images/products/'.$gallery->photos) }}",
             },
             @endforeach
           ],

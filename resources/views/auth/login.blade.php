@@ -1,5 +1,9 @@
 @extends('layouts.auth')
 
+@section('title')
+  Mini Project Hub - Login Page
+@endsection
+
 @section('content')
 <div class="page-content page-auth">
     <div class="section-store-auth" data-aos="fade-up">

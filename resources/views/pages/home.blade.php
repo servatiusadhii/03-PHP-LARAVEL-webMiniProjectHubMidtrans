@@ -104,39 +104,46 @@
                     @php $incrementProduct = 0 @endphp
                     @forelse ($products as $product)
                         <div
-                        class="col-6 col-md-4 col-lg-3"
-                        data-aos="fade-up"
-                        data-aos-delay="{{  $incrementProduct += 100 }}"
+                            class="col-6 col-md-4 col-lg-3"
+                            data-aos="fade-up"
+                            data-aos-delay="{{  $incrementProduct += 100 }}"
                         >
                             <a href="{{ route('detail', $product->slug) }}" class="component-products d-block">
                                 <div class="products-thumbnail">
                                     <div
-                                    class="products-image"
-                                    style="
-                                        @if($product->galleries)
-                                            background-image: url('{{ Storage::url($product->galleries->first()->photos) }}');
-                                        @else
-                                            background-color: #eee;
-                                        @endif
-                                    "
+                                        class="products-image"
+                                        style="
+                                            @if($product->galleries->count() > 0)
+                                                background-image: url('{{ asset('images/products/'.$product->galleries->first()->photos) }}');
+                                            @else
+                                                background-color: #eee;
+                                            @endif
+                                        "
                                     ></div>
                                 </div>
+                
                                 <div class="products-text">
-                                    {{  $product->name }}
+                                    {{ $product->name }}
                                 </div>
-                                <div class="products-price">
-                                    ${{ $product->price }}
+                
+                                <div class="products-row d-flex justify-content-between align-items-center">
+                                    <div class="products-price">
+                                        Rp {{ number_format($product->price, 0, ',', '.') }}
+                                    </div>
+                                    <div class="products-categories">
+                                        {{ $product->category->name }}
+                                    </div>
                                 </div>
                             </a>
                         </div>
                     @empty
                         <div
-                                class="col-12 text-center py-5"
-                                data-aos="fade-up"
-                                data-aos-delay="100"
-                            >
-                                No Products Found
-                            </div>
+                            class="col-12 text-center py-5"
+                            data-aos="fade-up"
+                            data-aos-delay="100"
+                        >
+                            No Products Found
+                        </div>
                     @endforelse
                 </div>
             </div>

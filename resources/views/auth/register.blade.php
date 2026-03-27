@@ -1,5 +1,9 @@
 @extends('layouts.auth')
 
+@section('title')
+  Mini Project Hub - Register Page
+@endsection
+
 @section('content')
 
 <div class="page-content page-auth" id="register">

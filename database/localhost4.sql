@@ -5,8 +5,8 @@ SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
-CREATE DATABASE `store_laravel` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `store_laravel`;
+CREATE DATABASE `laravel_db_miniproject_hub` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `laravel_db_miniproject_hub`;
 
 SET NAMES utf8mb4;
 
@@ -19,20 +19,20 @@ CREATE TABLE `carts` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `products_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 DROP TABLE IF EXISTS `categories`;
 CREATE TABLE `categories` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `photo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `photo` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `categories` (`id`, `name`, `photo`, `slug`, `deleted_at`, `created_at`, `updated_at`) VALUES
 (1,	'Website',	'cate-web.svg',	'website',	NULL,	'2021-04-22 04:46:34',	'2021-04-22 05:08:50'),
@@ -45,22 +45,22 @@ INSERT INTO `categories` (`id`, `name`, `photo`, `slug`, `deleted_at`, `created_
 DROP TABLE IF EXISTS `failed_jobs`;
 CREATE TABLE `failed_jobs` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text NOT NULL,
+  `queue` text NOT NULL,
+  `payload` longtext NOT NULL,
+  `exception` longtext NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 DROP TABLE IF EXISTS `indoregion_districts`;
 CREATE TABLE `indoregion_districts` (
-  `id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `regency_id` char(4) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` char(7) NOT NULL,
+  `regency_id` char(4) NOT NULL,
+  `name` varchar(50) NOT NULL,
   KEY `indoregion_districts_id_index` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `indoregion_districts` (`id`, `regency_id`, `name`) VALUES
 ('1101010',	'1101',	'TEUPAH SELATAN'),
@@ -7281,10 +7281,10 @@ INSERT INTO `indoregion_districts` (`id`, `regency_id`, `name`) VALUES
 
 DROP TABLE IF EXISTS `indoregion_provinces`;
 CREATE TABLE `indoregion_provinces` (
-  `id` char(2) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` char(2) NOT NULL,
+  `name` varchar(255) NOT NULL,
   KEY `indoregion_provinces_id_index` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `indoregion_provinces` (`id`, `name`) VALUES
 ('11',	'ACEH'),
@@ -7324,11 +7324,11 @@ INSERT INTO `indoregion_provinces` (`id`, `name`) VALUES
 
 DROP TABLE IF EXISTS `indoregion_regencies`;
 CREATE TABLE `indoregion_regencies` (
-  `id` char(4) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `province_id` char(2) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` char(4) NOT NULL,
+  `province_id` char(2) NOT NULL,
+  `name` varchar(50) NOT NULL,
   KEY `indoregion_regencies_id_index` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `indoregion_regencies` (`id`, `province_id`, `name`) VALUES
 ('1101',	'11',	'KABUPATEN SIMEULUE'),
@@ -7848,11 +7848,11 @@ INSERT INTO `indoregion_regencies` (`id`, `province_id`, `name`) VALUES
 
 DROP TABLE IF EXISTS `indoregion_villages`;
 CREATE TABLE `indoregion_villages` (
-  `id` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `district_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` char(10) NOT NULL,
+  `district_id` char(7) NOT NULL,
+  `name` varchar(50) NOT NULL,
   KEY `indoregion_villages_id_index` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `indoregion_villages` (`id`, `district_id`, `name`) VALUES
 ('1101010001',	'1101010',	'LATIUNG'),
@@ -88396,10 +88396,10 @@ INSERT INTO `indoregion_villages` (`id`, `district_id`, `name`) VALUES
 DROP TABLE IF EXISTS `migrations`;
 CREATE TABLE `migrations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1,	'2014_10_12_000000_create_users_table',	1),
@@ -88425,29 +88425,29 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 
 DROP TABLE IF EXISTS `password_resets`;
 CREATE TABLE `password_resets` (
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   KEY `password_resets_email_index` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 DROP TABLE IF EXISTS `products`;
 CREATE TABLE `products` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) NOT NULL,
   `users_id` int(11) NOT NULL,
   `categories_id` int(11) NOT NULL,
   `price` int(11) NOT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` longtext NOT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `category_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `slug` varchar(255) NOT NULL,
+  `category_name` varchar(255) DEFAULT NULL,
   `rating` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `products` (`id`, `name`, `users_id`, `categories_id`, `price`, `description`, `deleted_at`, `created_at`, `updated_at`, `slug`, `category_name`, `rating`) VALUES
 (1,	'Majelis Ice Coffee Signature',	1,	1,	18000,	'<p><strong>Majelis Ice Coffee Signature</strong>, merupakan produk es kopi susu andalan dari Majelis Cafe yang dilengkapi dengan gula aren yang legit banget...</p>\r\n\r\n<p>Majelis Ice Coffee Signature ini cocok banget sebagai pilihan buat kamu yang ga terlalu suka denga pahitnya Kopi, dan sebagai <strong>Teman Meeting WFH </strong>kamu.</p>',	NULL,	'2021-04-26 19:46:17',	'2021-04-26 20:16:29',	'majelis-ice-coffee-signature',	'Coffee',	NULL),
@@ -88462,12 +88462,12 @@ INSERT INTO `products` (`id`, `name`, `users_id`, `categories_id`, `price`, `des
 DROP TABLE IF EXISTS `product_galleries`;
 CREATE TABLE `product_galleries` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `photos` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `photos` varchar(255) NOT NULL,
   `products_id` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   UNIQUE KEY `iid` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `product_galleries` (`id`, `photos`, `products_id`, `created_at`, `updated_at`) VALUES
 (1,	'photo_kopi.jpeg',	1,	'2021-04-26 19:46:29',	'2021-04-26 19:46:29'),
@@ -88486,16 +88486,16 @@ CREATE TABLE `transactions` (
   `inscurance_price` int(11) NOT NULL,
   `shipping_price` int(11) NOT NULL DEFAULT '10000',
   `total_price` int(11) NOT NULL,
-  `transaction_status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `transaction_status` varchar(255) NOT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `resi` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `manual_status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `products_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` varchar(255) NOT NULL,
+  `resi` varchar(255) DEFAULT NULL,
+  `manual_status` varchar(255) DEFAULT NULL,
+  `products_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `transactions` (`id`, `users_id`, `inscurance_price`, `shipping_price`, `total_price`, `transaction_status`, `deleted_at`, `created_at`, `updated_at`, `code`, `resi`, `manual_status`, `products_name`) VALUES
 (1,	2,	0,	10000,	36000,	'SHIPPING',	NULL,	'2021-05-10 04:35:20',	'2021-05-10 04:36:34',	'STORE-6127',	'JNE-JKTM013579',	'ON THE WAY',	NULL),
@@ -88517,11 +88517,11 @@ CREATE TABLE `transaction_details` (
   `price` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `shipping_status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `resi` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `shipping_status` varchar(255) NOT NULL,
+  `resi` varchar(255) DEFAULT NULL,
+  `code` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `transaction_details` (`id`, `transactions_id`, `products_id`, `price`, `created_at`, `updated_at`, `shipping_status`, `resi`, `code`) VALUES
 (1,	1,	7,	26000,	'2021-05-10 04:35:20',	'2021-05-10 04:35:20',	'PENDING',	'',	'TRX-8848'),
@@ -88541,30 +88541,30 @@ INSERT INTO `transaction_details` (`id`, `transactions_id`, `products_id`, `pric
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address_one` longtext COLLATE utf8mb4_unicode_ci,
-  `address_two` longtext COLLATE utf8mb4_unicode_ci,
+  `password` varchar(255) NOT NULL,
+  `address_one` longtext,
+  `address_two` longtext,
   `provinces_id` int(11) DEFAULT NULL,
   `regencies_id` int(11) DEFAULT NULL,
   `zip_code` int(11) DEFAULT NULL,
-  `country` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `phone_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `store_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `phone_number` varchar(255) DEFAULT NULL,
+  `store_name` varchar(255) DEFAULT NULL,
   `categories_id` int(11) DEFAULT NULL,
   `store_status` int(11) DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `roles` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'USER',
-  `provinsi` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `kota` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `roles` varchar(255) NOT NULL DEFAULT 'USER',
+  `provinsi` varchar(255) DEFAULT NULL,
+  `kota` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `address_one`, `address_two`, `provinces_id`, `regencies_id`, `zip_code`, `country`, `phone_number`, `store_name`, `categories_id`, `store_status`, `deleted_at`, `remember_token`, `created_at`, `updated_at`, `roles`, `provinsi`, `kota`) VALUES
 (1,	'Fade Kopi',	'superadmin01@gmail.com',	NULL,	'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	'',	NULL,	1,	NULL,	NULL,	'2021-04-22 04:34:42',	'2021-04-26 19:42:07',	'ADMIN',	NULL,	NULL),

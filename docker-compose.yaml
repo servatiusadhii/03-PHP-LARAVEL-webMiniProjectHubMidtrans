@@ -1,0 +1,38 @@
+services:
+  app:
+    build:
+      context: ./docker/php
+    container_name: laravel_miniproject_hub_app
+    volumes:
+      - .:/var/www
+    working_dir: /var/www
+    depends_on:
+      - db
+
+  web:
+    image: nginx:alpine
+    container_name: laravel_miniproject_hub_web
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+
+  db:
+    image: mysql:8.3
+    container_name: laravel_miniproject_hub_mysql # ini buat nama kontainer db
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: laravel_db_miniproject_hub # ini buat nama dari database project lu
+      MYSQL_ROOT_PASSWORD: root # untuk akses superuser
+      MYSQL_USER: laravel # untuk nama myql user
+      MYSQL_PASSWORD: laravel # untuk password mysql usernya
+    volumes:
+      - dbdata:/var/lib/mysql
+
+volumes:
+  dbdata:

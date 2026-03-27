@@ -16,28 +16,30 @@ class CheckoutController extends Controller
 {
     public function process(Request $request)
     {
-        // TODO: Save users data
         $user = Auth::user();
         $user->update($request->except('total_price'));
-
-        // Proses checkout
-        $code = 'STORE-' . mt_rand(0000,9999);
-        $carts = Cart::with(['product','user'])
-                    ->where('users_id', Auth::user()->id)
+    
+        // Generate kode transaksi
+        $code = 'STORE-' . mt_rand(0000, 9999);
+    
+        // Ambil isi cart
+        $carts = Cart::with(['product', 'user'])
+                    ->where('users_id', $user->id)
                     ->get();
-
+    
+        // Buat transaksi utama
         $transaction = Transaction::create([
-            'users_id' => Auth::user()->id,
+            'users_id' => $user->id,
             'inscurance_price' => 0,
             'shipping_price' => 0,
             'total_price' => $request->total_price,
             'transaction_status' => 'PENDING',
             'code' => $code
         ]);
-
+    
+        // Buat detail transaksi
         foreach ($carts as $cart) {
-            $trx = 'TRX-' . mt_rand(0000,9999);
-
+            $trx = 'TRX-' . mt_rand(0000, 9999);
             TransactionDetail::create([
                 'transactions_id' => $transaction->id,
                 'products_id' => $cart->product->id,
@@ -47,44 +49,39 @@ class CheckoutController extends Controller
                 'code' => $trx
             ]);
         }
-
-        // Delete cart data
-        Cart::with(['product','user'])
-                ->where('users_id', Auth::user()->id)
-                ->delete();
-
-        // Konfigurasi midtrans
+    
+        // Hapus cart
+        Cart::where('users_id', $user->id)->delete();
+    
+        // Konfigurasi Midtrans
         Config::$serverKey = config('services.midtrans.serverKey');
         Config::$isProduction = config('services.midtrans.isProduction');
         Config::$isSanitized = config('services.midtrans.isSanitized');
         Config::$is3ds = config('services.midtrans.is3ds');
-
-        // Buat array untuk dikirim ke midtrans
-        $midtrans = array(
-            'transaction_details' => array(
-                'order_id' =>  $code,
+    
+        // Data untuk Snap JS
+        $midtransParams = [
+            'transaction_details' => [
+                'order_id' => $code,
                 'gross_amount' => (int) $request->total_price,
-            ),
-            'customer_details' => array(
-                'first_name'    => 'Galih Pratama',
-                'email'         => 'hanamura.iost@gmail.com'
-            ),
-            'enabled_payments' => array('gopay','bank_transfer'),
-            'vtweb' => array()
-        );
-
+            ],
+            'customer_details' => [
+                'first_name' => $user->name,
+                'email' => $user->email
+            ],
+            'enabled_payments' => ['gopay', 'bank_transfer'],
+        ];
+    
         try {
-            // Ambil halaman payment midtrans
-            $paymentUrl = Snap::createTransaction($midtrans)->redirect_url;
-
-            // Redirect ke halaman midtrans
-            return redirect($paymentUrl);
-        }
-        catch (Exception $e) {
-            echo $e->getMessage();
+            $midtransTransaction = Snap::createTransaction($midtransParams);
+            $snapToken = $midtransTransaction->token ?? null;
+    
+            // Kirim snapToken ke view cart
+            return view('cart', compact('carts', 'snapToken'));
+        } catch (Exception $e) {
+            return back()->with('error', $e->getMessage());
         }
     }
-
     public function callback(Request $request)
     {
         // Set konfigurasi midtrans
@@ -148,7 +145,12 @@ class CheckoutController extends Controller
             }
             else if ($status == 'success')
             {
-                //
+                return response()->json([
+                    'meta' => [
+                        'code' => 200,
+                        'message' => 'Midtrans Payment Challenge'
+                    ]
+                ]);
             }
             else if($status == 'capture' && $fraud == 'challenge' )
             {
